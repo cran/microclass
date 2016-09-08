@@ -63,49 +63,6 @@ multinomTrain <- function( sequence, taxon, K=8, col.names=FALSE, n.pseudo=100 )
   return( trained.model )
 }
 
-#' #' @export multinomTrainDuo
-#' multinomTrainDuo <- function( sequence, taxon, K=8, col.names=FALSE, n.pseudo=100 ){
-#'   taxInt <- taxon
-#'   if( is.character( taxon ) ){
-#'     taxInt  <- factor( taxon )
-#'     taxLevels <- levels( taxInt )
-#'     taxInt  <- as.integer( taxInt )
-#'     prior <- as.numeric( table( taxon )/length( taxon ) )
-#'   }
-#'   classesIn <- lapply( 1:max(taxInt), function(i)which(i==taxInt) )
-#'   multinom.prob <- multinomTrainDuoCpp( charToInt(sequence), K, col.names, classesIn, -1 )
-#'   if(n.pseudo >= 0){ # Apply pseudo counts in R
-#'     multinom.prob <- CountsToMultinom(multinom.prob, n.pseudo)
-#'   }
-#'   if( is.character( taxon ) ){
-#'     dimnames( multinom.prob ) <- list( taxLevels, NULL ) # Avoids copying
-#'   }
-#'   attr( multinom.prob, "prior" ) <- prior
-#'   trained.model <- list( Method="multinomDuo", Fitted=multinom.prob )
-#'   return( trained.model )
-#' }
-#' 
-# Older, slower version
-# multinomTrain <- function( sequence, taxon, K=8, col.names=FALSE, n.pseudo=100 ){
-#   taxInt <- taxon
-#   if( is.character( taxon ) ){
-#     taxInt  <- factor( taxon )
-#     taxLevels <- levels( taxInt )
-#     taxInt  <- as.integer( taxInt )
-#     prior <- as.numeric( table( taxon )/length( taxon ) )
-#   }
-#   multinom.prob <- multinomTrainCpp( charToInt( sequence ), K,
-#                                      col.names, taxInt-1,
-#                                      max( taxInt ), n.pseudo )
-#   if( is.character( taxon ) ){
-#     dimnames( multinom.prob ) <- list( taxLevels, NULL ) # Avoids copying
-#   }
-#   attr( multinom.prob, "prior" ) <- prior
-#   trained.model <- list( Method="multinom", Fitted=multinom.prob )
-#   return( trained.model )
-# }
-
-
 #' @name multinomClassify
 #' @title Classifying with a Multinomial model
 #' 
@@ -125,6 +82,11 @@ multinomTrain <- function( sequence, taxon, K=8, col.names=FALSE, n.pseudo=100 )
 #' By setting \code{post.prob=TRUE} you will get the log-probability of the best and second best taxon
 #' for each sequence. This can be used for evaluating the certainty in the classifications,
 #' see \code{\link{taxMachine}}.
+#' 
+#' The classification is parallelized through RcppParallel
+#' employing Intel TBB and TinyThread. By default all available
+#' processing cores are used. This can be changed using the
+#' function \code{\link{setParallel}}.
 #' 
 #' @return If \code{post.prob=FALSE} a character vector of predicted taxa is returned.
 #' 
@@ -149,9 +111,10 @@ multinomTrain <- function( sequence, taxon, K=8, col.names=FALSE, n.pseudo=100 )
 #' primer.515f <- "GTGYCAGCMGCCGCGGTAA"
 #' primer.806rB <- "GGACTACNVGGGTWTCTAAT"
 #' reads <- amplicon(seq, primer.515f, primer.806rB)
-#' predicted <- multinomClassify(reads[nchar(reads)>0],trn)
+#' predicted <- multinomClassify(unlist(reads[nchar(reads)>0]),trn)
 #' print(predicted)
 #' }
+#' 
 #' @export multinomClassify
 #' 
 multinomClassify <- function( sequence, trained.model, post.prob=FALSE, prior=FALSE ){
@@ -216,56 +179,3 @@ CountsToMultinomMulti <- function( X, n.pseudo, rowsums ){
   log2( X+n.pseudo/ncol(X) ) - log2( rowsums+n.pseudo )
 }
 
-# Older, slower version
-# multinomClassify <- function( sequence, trained.model, post.prob=FALSE, prior=FALSE ){
-#   if( trained.model$Method != "multinom" ) stop( "Trained model is not a multinomial!" )
-#   multinom.prob <- trained.model$Fitted
-#   K <- as.integer( log2(  dim( multinom.prob )[2] )/2 )
-#   rn <- rownames( multinom.prob )
-#   taxon.hat <- rep( "unclassified", length( sequence ) )
-#   
-#   # Computing zcores for each sequence
-#   freq.mat <- KmerCount( sequence, K )
-#   Z <- tcrossprodQ( freq.mat, multinom.prob )
-#   if( prior ){
-#     Z <- Z  +  log2( attr( multinom.prob, "prior" ) )
-#   }
-#   
-#   # Assigning to class with maximum zcore
-#   Z.max <- apply( Z, 1, max )
-#   ZZ <- ( Z==Z.max )
-#   m <- rowSums( ZZ )
-#   if( sum( m==1 ) > 1 ) {
-#     taxon.hat[m==1] <- rn[apply(ZZ[m==1,],1,which)]
-#   }
-#   
-#   # Computing posterior probabilities if required
-#   if( post.prob ){
-#     Z.max2 <- apply( Z, 1, function(x){
-#       sx <- sort(x,decreasing=T)
-#       return(sx[2])
-#     })
-#     return( data.frame( Taxon=taxon.hat, Post.prob.1=Z.max, Post.prob.2=Z.max2, stringsAsFactors=F ) )
-#   }
-#   return( taxon.hat )
-# }
-
-#' #' @export multinomClassifyDuo
-#' multinomClassifyDuo <- function( sequence, trained.model, post.prob=FALSE, prior=FALSE ){
-#'   if( trained.model$Method != "multinomDuo" ) stop( "Trained model is not a multinomial!" )
-#'   multinom.prob <- trained.model$Fitted
-#'   int.list <- charToInt( sequence )
-#'   if( prior ){
-#'     priors <- log2( attr( multinom.prob, "prior" ) )
-#'   } else {
-#'     priors <- rep(0, dim(multinom.prob)[1])
-#'   }
-#'   X <- multinomClassifyDuoCpp( int.list, log(ncol(multinom.prob), 4), multinom.prob, priors, post.prob )
-#'   if(post.prob){
-#'     return( data.frame(Taxon.1 = rownames(multinom.prob)[X$first_ind], Post.prob.1 = X$first,
-#'                        Taxon.2 = rownames(multinom.prob)[X$second_ind], Post.prob.2 = X$second,
-#'                        stringsAsFactors=FALSE) )
-#'   } else {
-#'     return(rownames(multinom.prob)[X$first_ind])
-#'   }
-#' }

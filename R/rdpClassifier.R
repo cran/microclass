@@ -75,6 +75,11 @@ rdpTrain <- function( sequence, taxon, K=8, cnames=FALSE ){
 #' probabilities for each taxon using a trained model and a naive Bayes assumption. The predicted
 #' taxon is the one producing the maximum posterior probability, for each \code{sequence}.
 #' 
+#' The classification is parallelized through RcppParallel
+#' employing Intel TBB and TinyThread. By default all available
+#' processing cores are used. This can be changed using the
+#' function \code{\link{setParallel}}.
+#' 
 #' @return A character vector with the predicted taxa, one for each \code{sequence}.
 #' 
 #' @references Wang, Q, Garrity, GM, Tiedje, JM, Cole, JR (2007). Naive Bayesian Classifier for 

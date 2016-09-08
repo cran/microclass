@@ -1,14 +1,9 @@
 // [[Rcpp::depends(RcppParallel)]]
-// [[Rcpp::depends(RcppArmadillo)]]
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 #include <RcppParallel.h>
-#define ARMA_NO_DEBUG
+#include "pow4inthead.h"
 using namespace Rcpp;
 using namespace RcppParallel;
-
-// #include <RProgress.h>
-// const char *format = "[:bar] :percent ";
-// RProgress::RProgress prog(format, 38781);
 
 struct RDPKmerProd_worker : public Worker {
   
@@ -52,7 +47,6 @@ struct RDPKmerProd_worker : public Worker {
         }
       }
       First_ind[i] = m;
-      // prog.tick();
     }
   }
 };
@@ -132,11 +126,10 @@ List rdpClassifyCpp(List seqs, int K, NumericMatrix QMat, NumericVector Prior, b
   RMatrix<double> Qmat(QMat);
   IntegerVector first_ind(num_strings);  // Result matrix 1
   RVector<int> First_ind(first_ind);
-  // prog.tick(0);
-  
+
   std::vector<int> Where(K); // Position translation vector
   for(int i=0; i<K; i++){
-    Where[i] = pow(4,K-i-1);
+    Where[i] = pow4int(K-i-1);
   }
   
   if(posterior){
@@ -166,7 +159,7 @@ List rdpClassifyCpp(List seqs, int K, NumericMatrix QMat, NumericVector Prior, b
 //   Rcpp::List strings(seqs);
 //   int nclass = Q.nrow();
 //   int where = 0;
-//   int nElem = pow(4,K);
+//   int nElem = pow4int(K);
 //   int num_strings = strings.length();
 //   NumericVector p(nElem);
 //   NumericVector Ci(nclass);
@@ -184,7 +177,7 @@ List rdpClassifyCpp(List seqs, int K, NumericMatrix QMat, NumericVector Prior, b
 // 
 //   // Prepare powers of 4
 //   for(int i=0; i < K; i++){
-//     Where[i] = pow(4,K-i-1);
+//     Where[i] = pow4int(K-i-1);
 //   }
 //   
 //   // Loop over sequences

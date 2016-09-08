@@ -1,8 +1,7 @@
 // [[Rcpp::depends(RcppParallel)]]
-// [[Rcpp::depends(RcppArmadillo)]]
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 #include <RcppParallel.h>
-#define ARMA_NO_DEBUG
+#include "pow4inthead.h"
 using namespace Rcpp;
 using namespace RcppParallel;
 
@@ -130,7 +129,7 @@ List multinomClassifyCpp(List seqs, int K, NumericMatrix QMat, NumericVector Pri
   
   std::vector<int> Where(K); // Position translation vector
   for(int i=0; i<K; i++){
-    Where[i] = pow(4,K-i-1);
+    Where[i] = pow4int(K-i-1);
   }
   
   if(posterior){
@@ -228,25 +227,25 @@ List multinomClassifyCpp(List seqs, int K, NumericMatrix QMat, NumericVector Pri
 //   // Convert input from R list to vector of vectors
 //   std::vector<std::vector<int> > Seqs = Rcpp::as< std::vector<std::vector<int> > >(seqs);
 //   int num_strings = Seqs.size();
-//   IntegerMatrix X(num_strings, pow(4,K)); // Result matrix
+//   IntegerMatrix X(num_strings, pow4int(K)); // Result matrix
 //   
 //   std::vector<int> Where(K); // Position translation vector
 //   for(int i=0; i<K; i++){
-//     Where[i] = pow(4,K-i-1);
+//     Where[i] = pow4int(K-i-1);
 //   }
 //   
 //   Kmer_worker kmer_worker(Seqs, K, Where, X);
 //   parallelFor(0, num_strings, kmer_worker);
 //   
 //   if(names){
-//     int N = pow(4,K);
+//     int N = pow4int(K);
 //     Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
 //     Rcpp::CharacterVector ACGTs(N);
 //     std::vector< std::vector< std::string > > matr;
 //     matr.resize( K , std::vector<std::string>( N ) );
 //     Rcpp::CharacterVector cnms(N);
 //     for(int i=0; i<K; i++){
-//       ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+//       ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
 //       matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
 //     }
 //     for(int i=0; i<N; i++){
@@ -293,7 +292,7 @@ List multinomClassifyCpp(List seqs, int K, NumericMatrix QMat, NumericVector Pri
 //     matr.resize( K , std::vector<std::string>( N ) );
 //     Rcpp::CharacterVector cnms(N);
 //     for(int i=0; i<K; i++){
-//       ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+//       ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
 //       matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
 //     }
 //     for(int i=0; i<N; i++){

@@ -4,5 +4,4 @@ PKG_LIBS += $(shell ${R_HOME}/bin/Rscript -e "RcppParallel::RcppParallelLibs()")
 ## PKG_LIBS += $(R_HOME)/bin/Rscript -e "RcppProgress:::CxxFlags()"
 PKG_CXXFLAGS = $(SHLIB_OPENMP_CXXFLAGS) -I../inst/include
 ## PKG_CXXFLAGS += -Ilibsrc $(SHLIB_OPENMP_CXXFLAGS) '$(R_HOME)/bin/Rscript -e "RcppProgress:::CxxFlags()"'
-
-
+CXX_STD = CXX11

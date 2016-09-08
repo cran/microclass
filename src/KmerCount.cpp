@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include "pow4inthead.h"
 using namespace Rcpp;
 
 // [[Rcpp::export]]
@@ -6,12 +7,12 @@ IntegerMatrix Kmer_count( SEXP seqs, int K, bool names ) {
   
   Rcpp::List strings(seqs);
   int num_strings = strings.length();
-  IntegerMatrix X(num_strings, pow(4,K));
+  IntegerMatrix X(num_strings, pow4int(K));
   int where = 0;
   std::vector<int> Where(K);
   
   for(int i=0; i<K; i++){
-    Where[i] = pow(4,K-i-1);  // med K=3 blir Where lik 16 og 4 og 1
+    Where[i] = pow4int(K-i-1);  // med K=3 blir Where lik 16 og 4 og 1
   }
   
   for( int i=0; i<num_strings; i++ ) {        // looper over sekvenser
@@ -30,14 +31,14 @@ IntegerMatrix Kmer_count( SEXP seqs, int K, bool names ) {
   }
 
   if(names){
-    int N = pow(4,K);
+    int N = pow4int(K);
     Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
     Rcpp::CharacterVector ACGTs(N);
     std::vector< std::vector< std::string > > matr;
     matr.resize( K , std::vector<std::string>( N ) );
     Rcpp::CharacterVector cnms(N);
     for(int i=0; i<K; i++){
-      ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+      ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
       matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
     }
     for(int i=0; i<N; i++){

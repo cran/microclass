@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include "pow4inthead.h"
 using namespace Rcpp;
 
 // [[Rcpp::export]]
@@ -7,7 +8,7 @@ SEXP rdpTrainCpp(List seqs, int K, bool names, List classesIn, double nPseudo){
   std::vector<std::vector<int> > Seqs = Rcpp::as< std::vector<std::vector<int> > >(seqs);
   std::vector<std::vector<int> > ClassesIn = Rcpp::as< std::vector<std::vector<int> > >(classesIn);
   int nClasses = ClassesIn.size();
-  int p = pow(4,K), where = 0;
+  int p = pow4int(K), where = 0;
   int num_substr;
   IntegerMatrix X(nClasses, p); // Result matrix
   std::vector<bool> x;
@@ -15,7 +16,7 @@ SEXP rdpTrainCpp(List seqs, int K, bool names, List classesIn, double nPseudo){
   
   std::vector<int> Where(K); // Position translation vector
   for(int i=0; i<K; i++){
-    Where[i] = pow(4,K-i-1);
+    Where[i] = pow4int(K-i-1);
   }
   
   for(int j=0; j<nClasses; j++){ // looper over alle klasser
@@ -39,14 +40,14 @@ SEXP rdpTrainCpp(List seqs, int K, bool names, List classesIn, double nPseudo){
   }
   
   if(names){ // Legger til navn
-    int N = pow(4,K);
+    int N = pow4int(K);
     Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
     Rcpp::CharacterVector ACGTs(N);
     std::vector< std::vector< std::string > > matr;
     matr.resize( K , std::vector<std::string>( N ) );
     Rcpp::CharacterVector cnms(N);
     for(int i=0; i<K; i++){
-      ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+      ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
       matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
     }
     for(int i=0; i<N; i++){
@@ -79,14 +80,14 @@ SEXP rdpTrainCpp(List seqs, int K, bool names, List classesIn, double nPseudo){
     }
     
     if(names){
-      int N = pow(4,K);
+      int N = pow4int(K);
       Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
       Rcpp::CharacterVector ACGTs(N);
       std::vector< std::vector< std::string > > matr;
       matr.resize( K , std::vector<std::string>( N ) );
       Rcpp::CharacterVector cnms(N);
       for(int i=0; i<K; i++){
-        ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+        ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
         matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
       }
       for(int i=0; i<N; i++){
@@ -116,7 +117,7 @@ SEXP rdpTrainCpp(List seqs, int K, bool names, List classesIn, double nPseudo){
 //   IntegerVector classes(classesIn);
 //   NumericVector M(Min);
 //   int where = 0;
-//   int nElem = pow(4,K);
+//   int nElem = pow4int(K);
 //   int num_strings = strings.length();
 //   double pj = 0;
 //   NumericMatrix C(nclass, nElem);
@@ -126,7 +127,7 @@ SEXP rdpTrainCpp(List seqs, int K, bool names, List classesIn, double nPseudo){
 //   
 //   // Prepare powers of 4
 //   for(int i=0; i < K; i++){
-//     Where[i] = pow(4,K-i-1);
+//     Where[i] = pow4int(K-i-1);
 //   }
 //   
 //   // Loop over sequences
@@ -172,14 +173,14 @@ SEXP rdpTrainCpp(List seqs, int K, bool names, List classesIn, double nPseudo){
 //   
 //   // Create dimnames for output matrix
 //   if(names){
-//     int N = pow(4,K);
+//     int N = pow4int(K);
 //     Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
 //     Rcpp::CharacterVector ACGTs(N);
 //     std::vector< std::vector< std::string > > matr;
 //     matr.resize( K , std::vector<std::string>( N ) );
 //     Rcpp::CharacterVector cnms(N);
 //     for(int i=0; i<K; i++){
-//       ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+//       ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
 //       matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
 //     }
 //     for(int i=0; i<N; i++){

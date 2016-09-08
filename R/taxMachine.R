@@ -113,8 +113,8 @@ taxMachine <- function( sequence, model.in.memory=TRUE, model.on.disk = FALSE,
   }
   
   coef.bias <- coef.sd <- std.frame <- rprob.mat <- NULL
-  load( file.path( path.package( "microclass" ), "extdata/norm.models.rda", sep="" ) )
-  load( file.path( path.package( "microclass" ), "extdata/std.frame.rda", sep="" ) )
+  load( file.path( path.package( "microclass" ), "extdata/norm.models.rda" ) )
+  load( file.path( path.package( "microclass" ), "extdata/std.frame.rda" ) )
   load( file.path( path.package( "microclass" ), paste( "extdata/rprob.mat.", ml, ".rda", sep="" ) ) )
   
   

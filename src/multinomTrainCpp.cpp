@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include "pow4inthead.h"
 using namespace Rcpp;
 
 // [[Rcpp::export]]
@@ -7,19 +8,19 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
   std::vector<std::vector<int> > Seqs = Rcpp::as< std::vector<std::vector<int> > >(seqs);
   std::vector<std::vector<int> > ClassesIn = Rcpp::as< std::vector<std::vector<int> > >(classesIn);
   int nClasses = ClassesIn.size();
-  int p = pow(4,K), where = 0;
+  int p = pow4int(K), where = 0;
   int num_substr;
   IntegerMatrix X(nClasses, p); // Result matrix
   std::vector<int> x;
   
   std::vector<int> Where(K); // Position translation vector
   for(int i=0; i<K; i++){
-    Where[i] = pow(4,K-i-1);
+    Where[i] = pow4int(K-i-1);
   }
   
   for(int j=0; j<nClasses; j++){ // looper over alle klasser
     x = std::vector<int>(p);
-    for(int i = 0; i < ClassesIn[j].size(); i++) {      // looper over alle medlemmer i en klasse
+    for(unsigned int i = 0; i < ClassesIn[j].size(); i++) {      // looper over alle medlemmer i en klasse
       num_substr = Seqs[ClassesIn[j][i]-1].size()-K+1;  // antall ord av lengde K i sekvens i
       for( int m=0; m<num_substr; m++ ) {               // looper over alle ord
         where = 0;
@@ -37,14 +38,14 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
   }
   
   if(names){ // Legger til navn
-    int N = pow(4,K);
+    int N = pow4int(K);
     Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
     Rcpp::CharacterVector ACGTs(N);
     std::vector< std::vector< std::string > > matr;
     matr.resize( K , std::vector<std::string>( N ) );
     Rcpp::CharacterVector cnms(N);
     for(int i=0; i<K; i++){
-      ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+      ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
       matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
     }
     for(int i=0; i<N; i++){
@@ -76,14 +77,14 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
     }
     
     if(names){
-      int N = pow(4,K);
+      int N = pow4int(K);
       Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
       Rcpp::CharacterVector ACGTs(N);
       std::vector< std::vector< std::string > > matr;
       matr.resize( K , std::vector<std::string>( N ) );
       Rcpp::CharacterVector cnms(N);
       for(int i=0; i<K; i++){
-        ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+        ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
         matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
       }
       for(int i=0; i<N; i++){
@@ -106,7 +107,7 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
 //   std::vector<std::vector<int> > Seqs = Rcpp::as< std::vector<std::vector<int> > >(seqs);
 //   std::vector<std::vector<int> > ClassesIn = Rcpp::as< std::vector<std::vector<int> > >(classesIn);
 //   int nClasses = ClassesIn.size();
-//   int p = pow(4,K), where = 0;
+//   int p = pow4int(K), where = 0;
 //   int num_substr;
 //   IntegerMatrix X(nClasses, p); // Result matrix
 //   IntegerVector Sizes(nClasses); // Class size vector
@@ -114,7 +115,7 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
 //   
 //   std::vector<int> Where(K); // Position translation vector
 //   for(int i=0; i<K; i++){
-//     Where[i] = pow(4,K-i-1);
+//     Where[i] = pow4int(K-i-1);
 //   }
 //   
 //   for(int j=0; j<nClasses; j++){ // looper over alle klasser
@@ -138,14 +139,14 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
 //   }
 //   
 //   if(names){ // Legger til navn
-//     int N = pow(4,K);
+//     int N = pow4int(K);
 //     Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
 //     Rcpp::CharacterVector ACGTs(N);
 //     std::vector< std::vector< std::string > > matr;
 //     matr.resize( K , std::vector<std::string>( N ) );
 //     Rcpp::CharacterVector cnms(N);
 //     for(int i=0; i<K; i++){
-//       ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+//       ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
 //       matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
 //     }
 //     for(int i=0; i<N; i++){
@@ -178,14 +179,14 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
 //     }
 //     
 //     if(names){
-//       int N = pow(4,K);
+//       int N = pow4int(K);
 //       Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
 //       Rcpp::CharacterVector ACGTs(N);
 //       std::vector< std::vector< std::string > > matr;
 //       matr.resize( K , std::vector<std::string>( N ) );
 //       Rcpp::CharacterVector cnms(N);
 //       for(int i=0; i<K; i++){
-//         ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+//         ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
 //         matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
 //       }
 //       for(int i=0; i<N; i++){
@@ -208,7 +209,7 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
 //   Rcpp::List strings(seqs);
 //   IntegerVector classes(classesIn);
 //   int where = 0;
-//   int nElem = pow(4,K);
+//   int nElem = pow4int(K);
 //   double p1 = npseudo/nElem;
 //   int num_strings = strings.length();
 //   NumericMatrix C(nclass, nElem);
@@ -218,7 +219,7 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
 //   
 //   // Prepare powers of 4
 //   for(int i=0; i < K; i++){
-//     Where[i] = pow(4,K-i-1);
+//     Where[i] = pow4int(K-i-1);
 //   }
 //   
 //   // Loop over sequences
@@ -258,14 +259,14 @@ SEXP multinomTrainCpp(List seqs, int K, bool names, List classesIn, double nPseu
 //   
 //   // Create dimnames for output matrix
 //   if(names){
-//     int N = pow(4,K);
+//     int N = pow4int(K);
 //     Rcpp::CharacterVector ACGT = Rcpp::CharacterVector::create("A","C","G","T");
 //     Rcpp::CharacterVector ACGTs(N);
 //     std::vector< std::vector< std::string > > matr;
 //     matr.resize( K , std::vector<std::string>( N ) );
 //     Rcpp::CharacterVector cnms(N);
 //     for(int i=0; i<K; i++){
-//       ACGTs = rep(rep_each(ACGT, pow(4,(K-1-i))), pow(4,i));
+//       ACGTs = rep(rep_each(ACGT, pow4int(K-i-1)), pow4int(i));
 //       matr[i] = Rcpp::as< std::vector< std::string > >(ACGTs);
 //     }
 //     for(int i=0; i<N; i++){

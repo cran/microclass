@@ -5,66 +5,6 @@ charToInt <- function(Seq) {
     .Call('microclass_charToInt', PACKAGE = 'microclass', Seq)
 }
 
-crossprodnum <- function(AA) {
-    .Call('microclass_crossprodnum', PACKAGE = 'microclass', AA)
-}
-
-tcrossprodnum <- function(AA) {
-    .Call('microclass_tcrossprodnum', PACKAGE = 'microclass', AA)
-}
-
-crossprodint <- function(AA) {
-    .Call('microclass_crossprodint', PACKAGE = 'microclass', AA)
-}
-
-tcrossprodint <- function(AA) {
-    .Call('microclass_tcrossprodint', PACKAGE = 'microclass', AA)
-}
-
-tcrossprodnumnum <- function(AA, BB) {
-    .Call('microclass_tcrossprodnumnum', PACKAGE = 'microclass', AA, BB)
-}
-
-tcrossprodintint <- function(AA, BB) {
-    .Call('microclass_tcrossprodintint', PACKAGE = 'microclass', AA, BB)
-}
-
-crossprodnumnum <- function(AA, BB) {
-    .Call('microclass_crossprodnumnum', PACKAGE = 'microclass', AA, BB)
-}
-
-crossprodintint <- function(AA, BB) {
-    .Call('microclass_crossprodintint', PACKAGE = 'microclass', AA, BB)
-}
-
-crossprodIntint <- function(AA, BB) {
-    .Call('microclass_crossprodIntint', PACKAGE = 'microclass', AA, BB)
-}
-
-prodnumnum <- function(AA, BB) {
-    .Call('microclass_prodnumnum', PACKAGE = 'microclass', AA, BB)
-}
-
-prodintint <- function(AA, BB) {
-    .Call('microclass_prodintint', PACKAGE = 'microclass', AA, BB)
-}
-
-eprodnumnum <- function(AA, BB) {
-    .Call('microclass_eprodnumnum', PACKAGE = 'microclass', AA, BB)
-}
-
-eprodintint <- function(AA, BB) {
-    .Call('microclass_eprodintint', PACKAGE = 'microclass', AA, BB)
-}
-
-sseintint <- function(AA, BB) {
-    .Call('microclass_sseintint', PACKAGE = 'microclass', AA, BB)
-}
-
-ssenumnum <- function(AA, BB) {
-    .Call('microclass_ssenumnum', PACKAGE = 'microclass', AA, BB)
-}
-
 Kmer_count <- function(seqs, K, names) {
     .Call('microclass_Kmer_count', PACKAGE = 'microclass', seqs, K, names)
 }

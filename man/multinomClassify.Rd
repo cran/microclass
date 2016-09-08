@@ -28,28 +28,6 @@ log-probabilities for each sequence.
 Classifying sequences by a trained Multinomial model.
 }
 \details{
-#' @export multinomTrainDuo
-multinomTrainDuo <- function( sequence, taxon, K=8, col.names=FALSE, n.pseudo=100 ){
-  taxInt <- taxon
-  if( is.character( taxon ) ){
-    taxInt  <- factor( taxon )
-    taxLevels <- levels( taxInt )
-    taxInt  <- as.integer( taxInt )
-    prior <- as.numeric( table( taxon )/length( taxon ) )
-  }
-  classesIn <- lapply( 1:max(taxInt), function(i)which(i==taxInt) )
-  multinom.prob <- multinomTrainDuoCpp( charToInt(sequence), K, col.names, classesIn, -1 )
-  if(n.pseudo >= 0){ # Apply pseudo counts in R
-    multinom.prob <- CountsToMultinom(multinom.prob, n.pseudo)
-  }
-  if( is.character( taxon ) ){
-    dimnames( multinom.prob ) <- list( taxLevels, NULL ) # Avoids copying
-  }
-  attr( multinom.prob, "prior" ) <- prior
-  trained.model <- list( Method="multinomDuo", Fitted=multinom.prob )
-  return( trained.model )
-}
-
 The classification step of the Multinomial method (Vinje et al, 2015) means counting 
 K-mers on all sequences, and computing the posterior probabilities for each taxon in the trained model.
 The predicted taxon for each input sequence is the one with the maximum posterior probability for
@@ -58,6 +36,11 @@ that sequence.
 By setting \code{post.prob=TRUE} you will get the log-probability of the best and second best taxon
 for each sequence. This can be used for evaluating the certainty in the classifications,
 see \code{\link{taxMachine}}.
+
+The classification is parallelized through RcppParallel
+employing Intel TBB and TinyThread. By default all available
+processing cores are used. This can be changed using the
+function \code{\link{setParallel}}.
 }
 \examples{
 data("small.16S")
@@ -68,9 +51,10 @@ trn <- multinomTrain(seq,tax)
 primer.515f <- "GTGYCAGCMGCCGCGGTAA"
 primer.806rB <- "GGACTACNVGGGTWTCTAAT"
 reads <- amplicon(seq, primer.515f, primer.806rB)
-predicted <- multinomClassify(reads[nchar(reads)>0],trn)
+predicted <- multinomClassify(unlist(reads[nchar(reads)>0]),trn)
 print(predicted)
 }
+
 }
 \author{
 Kristian Hovde Liland and Lars Snipen.
