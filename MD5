@@ -1,4 +1,4 @@
-aafb91b7a5045ff33aa089e71e1537b9 *DESCRIPTION
+b44733caeb38224cacd1ac8a83449955 *DESCRIPTION
 51c361dae97c6de2102ee686672be695 *NAMESPACE
 f2c742d5e0caa2f884eda19e3ccf25fd *R/KmerCount.R
 e17849dfcab8642eeb95294f46d8fe58 *R/RcppExports.R
@@ -9,8 +9,11 @@ d99de708957101c7a1c362d46e6e3700 *R/datasets.R
 9a0c12b1b8f4953ce94a3005bedb4640 *R/rdpClassifier.R
 aa50539e20931bbf8ff99cdf5a2071e7 *R/taxMachine.R
 38023c29835f345ee2104138158b4892 *R/zzz.R
+2b9db4befc9342b07b4f119b22a4c6d0 *build/vignette.rds
 66987e5612f979c0b5bc19f3446eb950 *data/small.16S.rda
-c9df219969ec4967a78c04459f059989 *inst/extdata/contax.trim.rda
+604d562aecb4aa27be92c74c3d2f2dda *inst/doc/intro.R
+bb0d18800e4764eeed1a57b89e84306e *inst/doc/intro.Rmd
+21d5f8958331877004b92615bbe979e7 *inst/doc/intro.html
 5718bb5bb49800fe1d48a7fe535eda99 *inst/extdata/norm.models.rda
 b56ed531217031f0ea549b385268aba8 *inst/extdata/rprob.mat.1400.rda
 4816d63ab39551ae0cf071cd898c43b2 *inst/extdata/rprob.mat.150.rda
@@ -39,3 +42,4 @@ b2ac8c3d4024f4dd2c23d749cffa0ae2 *src/multinomTrainCpp.cpp
 a43da4225419980865b5af99ef2cb9e9 *src/pow4inthead.h
 cc4c83f02a823cb68b2b6c33a8bcc132 *src/rdpClassifyCpp.cpp
 d0c8683201ca8eff20e419af82b23d63 *src/rdpTrainCpp.cpp
+fc658ccfdb83ac480c0edec89d03bfb4 *vignettes/intro.Rmd
