@@ -31,10 +31,9 @@ computations slower.
 KmerCount("ATGCCTGAACTGACCTGC",K=2)
 
 }
-\author{
-Kristian Hovde Liland and Lars Snipen.
-}
 \seealso{
 \code{\link{multinomTrain}}, \code{\link{multinomClassify}}.
 }
-
+\author{
+Kristian Hovde Liland and Lars Snipen.
+}

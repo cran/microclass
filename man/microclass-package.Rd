@@ -2,8 +2,8 @@
 % Please edit documentation in R/microclass-package.R
 \docType{package}
 \name{microclass-package}
-\alias{microclass}
 \alias{microclass-package}
+\alias{microclass}
 \title{Methods for 16S based taxonomic classification of prokaryotes}
 \usage{
 microclass()
@@ -25,9 +25,4 @@ License: \tab GPL-2\cr
 Hilde Vinje, Kristian Hovde Liland, Lars Snipen.\cr
 Maintainer: Lars Snipen <lars.snipen@nmbu.no>
 }
-\seealso{
-\code{\link[microseq]{microseq}}, 
-\code{\link[microcontax]{microcontax}}
-}
 \keyword{package}
-

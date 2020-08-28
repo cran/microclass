@@ -22,7 +22,7 @@ A 16S based classification based on BLAST.
 \details{
 A vector of 16S sequences (DNA) are classified by first using BLAST \code{blastn} against
 a database of 16S DNA sequences, and then classify according to the nearest-neighbour principle.
-The nearest neighbour of a query sequence is the hit with the largest bitscore. The BLAST+
+The nearest neighbour of a query sequence is the hit with the largest bitscore. The blast+
 software  \url{https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download}
 must be installed on the system. Type \code{system("blastn -help")} in the Console window,
 and a sensible Help-text should appear.
@@ -44,20 +44,17 @@ vary between taxa.
 }
 \examples{
 data("small.16S")
-seq <- small.16S$Sequence
-tax <- sapply(strsplit(small.16S$Header,split=" "),function(x){x[2]})
 \dontrun{
-dbase <- blastDbase16S("test",seq,tax)
-reads <- amplicon(seq)
-predicted <- blastClassify16S(reads[nchar(reads)>0],dbase)
-print(predicted)
+dbase <- blastDbase16S("test", small.16S$Sequence, word(small.16S$Header, 2, 2))
+reads <- str_sub(small.16S$Sequence, 100, 550)
+blastClassify16S(reads, dbase) \%>\% 
+  bind_cols(small.16S) -> tbl
 }
 
-}
-\author{
-Lars Snipen.
 }
 \seealso{
 \code{\link{blastDbase16S}}.
 }
-
+\author{
+Lars Snipen.
+}

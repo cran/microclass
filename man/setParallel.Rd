@@ -24,4 +24,3 @@ setParallel() # Use all available logical cores.
 }
 
 }
-

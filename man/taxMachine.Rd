@@ -4,8 +4,13 @@
 \alias{taxMachine}
 \title{Classifying 16S sequences}
 \usage{
-taxMachine(sequence, model.in.memory = TRUE, model.on.disk = FALSE,
-  verbose = TRUE, chunk.size = 10000)
+taxMachine(
+  sequence,
+  model.in.memory = TRUE,
+  model.on.disk = FALSE,
+  verbose = TRUE,
+  chunk.size = 10000
+)
 }
 \arguments{
 \item{sequence}{Character vector with DNA sequences.}
@@ -60,12 +65,9 @@ since this will take some time.
 \examples{
 \dontrun{
 data(small.16S)
-tax.tab <- taxMachine( small.16S$Sequence )
+tax.tab <- taxMachine(small.16S$Sequence)
 }
 
-}
-\author{
-Lars Snipen and Kristian Hovde Liland
 }
 \references{
 Liland, KH, Vinje, H, Snipen, L (2016). \code{microclass} - An 
@@ -74,4 +76,6 @@ R-package for 16S taxonomy classification. BMC Bioinformatics, xx:yy.
 \seealso{
 \code{\link{KmerCount}}, \code{\link{multinomClassify}}.
 }
-
+\author{
+Lars Snipen and Kristian Hovde Liland
+}

@@ -37,10 +37,9 @@ length as \code{sequence}, containing the correpsonding taxon information.
 # See examples for blastClassify16S.
 
 }
-\author{
-Lars Snipen.
-}
 \seealso{
 \code{\link{blastClassify16S}}.
 }
-
+\author{
+Lars Snipen.
+}

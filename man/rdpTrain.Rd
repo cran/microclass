@@ -42,9 +42,6 @@ be used as empirical priors in the classification step.
 # See examples for rdpClassify.
 
 }
-\author{
-Kristian Hovde Liland and Lars Snipen.
-}
 \references{
 Wang, Q, Garrity, GM, Tiedje, JM, Cole, JR (2007). Naive Bayesian Classifier for 
 Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy. Applied and Enviromental 
@@ -53,4 +50,6 @@ Microbiology, 73: 5261-5267.
 \seealso{
 \code{\link{rdpClassify}}.
 }
-
+\author{
+Kristian Hovde Liland and Lars Snipen.
+}

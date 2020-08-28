@@ -56,9 +56,6 @@ print(predicted)
 }
 
 }
-\author{
-Kristian Hovde Liland and Lars Snipen.
-}
 \references{
 Vinje, H, Liland, KH, Almøy, T, Snipen, L. (2015). Comparing K-mer based methods for
 improved classification of 16S sequences. BMC Bioinformatics, 16:205.
@@ -66,4 +63,6 @@ improved classification of 16S sequences. BMC Bioinformatics, 16:205.
 \seealso{
 \code{\link{KmerCount}}, \code{\link{multinomTrain}}.
 }
-
+\author{
+Kristian Hovde Liland and Lars Snipen.
+}

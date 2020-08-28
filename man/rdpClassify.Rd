@@ -47,9 +47,6 @@ print(predicted)
 }
 
 }
-\author{
-Kristian Hovde Liland and Lars Snipen.
-}
 \references{
 Wang, Q, Garrity, GM, Tiedje, JM, Cole, JR (2007). Naive Bayesian Classifier for 
 Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy. Applied and Enviromental 
@@ -58,4 +55,6 @@ Microbiology, 73: 5261-5267.
 \seealso{
 \code{\link{rdpTrain}}.
 }
-
+\author{
+Kristian Hovde Liland and Lars Snipen.
+}
